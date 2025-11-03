@@ -253,7 +253,7 @@ npm run dev
 ### 進行中 🚧
 
 - [X] Phase 0: 基礎建設 - 規劃完成 ✅
-- [ ] Day 1: 開發環境設置 (準備執行)
+- [X] Day 1: 開發環境設置 (準備執行)
 - [ ] Week 1: 影片管理系統基礎
 
 ### 待開始 📋
@@ -369,7 +369,7 @@ git commit -m "fix: correct coordinate transformation"
   - PGAdmin email 配置 → 改用 .com 尾碼
 - 📋 更新文檔: QUICKSTART.md, DAILY_REPORTS.md, EXECUTION_PLAN.md
 
-**投入時間**: 1.5 小時  
+**投入時間**: 1.5 小時
 **下一步**: Day 2 初始化資料庫和測試 MediaPipe
 
 ---

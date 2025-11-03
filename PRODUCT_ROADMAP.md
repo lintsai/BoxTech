@@ -92,9 +92,9 @@
 
 #### 里程碑 0.1: 專案初始化
 
-- [ ] 建立 Git 版本控制
-- [ ] 設置虛擬環境 (Python 3.10+)
-- [ ] 安裝核心依賴
+- [X] 建立 Git 版本控制
+- [X] 設置虛擬環境 (Python 3.10+)
+- [X] 安裝核心依賴
   ```
   - opencv-python
   - mediapipe
@@ -103,7 +103,7 @@
   - sqlalchemy
   - pandas, numpy
   ```
-- [ ] 建立專案目錄結構
+- [X] 建立專案目錄結構
   ```
   BoxTech/
   ├── backend/
@@ -577,11 +577,11 @@
 
 ### 本週行動項 (Week 1)
 
-1. ✅ 閱讀並確認此路線圖 (Day 0)
-2. ✅ 決定技術棧 (確認 MediaPipe / GPT-4) (Day 0)
-3. ✅ 設置開發環境 (Day 1)
-4. ✅ 安裝必要套件 (Day 1)
-5. ✅ 建立 Git Repository (Day 1)
+1. [X] 閱讀並確認此路線圖 (Day 0)
+2. [X] 決定技術棧 (確認 MediaPipe / GPT-4) (Day 0)
+3. [X] 設置開發環境 (Day 1)
+4. [X] 安裝必要套件 (Day 1)
+5. [X] 建立 Git Repository (Day 1)
 6. [ ] 測試 MediaPipe 在一支影片上 (Day 2)
 
 ### 下週行動項 (Week 2)

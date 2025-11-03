@@ -114,7 +114,7 @@
 
 1. **上午** (2 小時)
 
-   - [X] 跟隨 QUICKSTART.md 設置環境
+   - [ ] 跟隨 QUICKSTART.md 設置環境
    - [X] 運行 setup_project.py
    - [X] 啟動資料庫
 2. **下午** (3 小時)
