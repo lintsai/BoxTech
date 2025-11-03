@@ -1,0 +1,115 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Videos (DO NOT commit videos to Git)
+Midea/**/*.mp4
+Midea/**/*.mov
+Midea/**/*.MOV
+Midea/**/*.avi
+Midea/**/*.HEIC
+Midea/**/*.heic
+
+# But keep directory structure
+!Midea/.gitkeep
+!Midea/*/.gitkeep
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+
+# ML Models (large files)
+ml_models/**/*.h5
+ml_models/**/*.pth
+ml_models/**/*.pt
+ml_models/**/*.ckpt
+ml_models/**/*.pkl
+
+# But keep small config files
+!ml_models/**/config.json
+!ml_models/**/README.md
+
+# Generated files
+output/
+exports/
+reports/
+
+# Node (for frontend)
+node_modules/
+.next/
+out/
+build/
+
+# Unity
+unity/BoxingSimulator/Library/
+unity/BoxingSimulator/Temp/
+unity/BoxingSimulator/Obj/
+unity/BoxingSimulator/Build/
+unity/BoxingSimulator/Builds/
+unity/BoxingSimulator/Logs/
+unity/BoxingSimulator/UserSettings/
+unity/BoxingSimulator/*.csproj
+unity/BoxingSimulator/*.unityproj
+unity/BoxingSimulator/*.sln
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.backup

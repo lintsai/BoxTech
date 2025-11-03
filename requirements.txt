@@ -1,0 +1,78 @@
+# Python Dependencies for BoxTech
+
+# Core Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.5.0
+pydantic-settings==2.1.0
+
+# Database
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+alembic==1.12.1
+
+# Redis & Celery
+redis==5.0.1
+celery==5.3.4
+flower==2.0.1
+
+# Computer Vision & AI
+opencv-python==4.8.1.78
+mediapipe==0.10.8
+numpy==1.26.2
+scikit-learn==1.3.2
+
+# Machine Learning
+tensorflow==2.15.0
+# torch==2.1.0  # 如果選擇 PyTorch
+
+# Video Processing
+ffmpeg-python==0.2.0
+
+# Image Processing
+Pillow==10.1.0
+matplotlib==3.8.2
+
+# OpenAI
+openai==1.3.7
+
+# Vector Database (choose one)
+pinecone-client==2.2.4
+# chromadb==0.4.18
+
+# Utilities
+python-multipart==0.0.6
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+python-dotenv==1.0.0
+httpx==0.25.2
+
+# PDF Generation
+reportlab==4.0.7
+# weasyprint==60.1
+
+# Testing
+pytest==7.4.3
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+
+# Development
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+ipython==8.18.1
+
+# Monitoring
+sentry-sdk==1.38.0
+
+# Video Hash (for duplicate detection)
+videohash==3.0.1
+
+# Data Analysis
+pandas==2.1.3
+
+# Charting (backend)
+seaborn==0.13.0
+
+# Logging
+python-json-logger==2.0.7
