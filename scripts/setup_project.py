@@ -23,7 +23,8 @@ def main():
     print("🚀 BoxTech Project Setup")
     print("=" * 50)
     
-    base_dir = Path(__file__).parent
+    # 將專案結構建立在專案根目錄（非 scripts/ 內）
+    base_dir = Path(__file__).parent.parent
     
     # 後端目錄結構
     backend_dirs = [
@@ -555,7 +556,9 @@ Download pre-trained models from [link to be added].
     print("3. Install Python dependencies: pip install -r requirements.txt")
     print("4. Initialize database: python scripts/init_database.py")
     print("5. Scan videos: python scripts/scan_videos.py")
-    print("6. Start backend: cd backend && python main.py")
+    print("6. Start backend (choose one):")
+    print("   - cd backend && python main.py")
+    print("   - uvicorn backend.main:app --reload --port 8000")
     print("\n🚀 Happy coding!")
 
 if __name__ == "__main__":

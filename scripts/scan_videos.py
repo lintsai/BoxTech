@@ -61,33 +61,54 @@ def parse_filename(filename: str) -> dict:
     
     return metadata
 
+ALLOWED_VIDEO_SUFFIXES = {'.mp4', '.mov', '.avi', '.heic'}  # Exclude images like .heic by default
+
+
 def scan_videos(directory: str = "./Midea"):
     """掃描影片資料夾"""
     db = SessionLocal()
     
-    video_extensions = ['.mp4', '.mov', '.MOV', '.avi', '.HEIC', '.heic']
+    # Use case-insensitive suffix filtering to avoid duplicates on Windows
+    allowed_suffixes = ALLOWED_VIDEO_SUFFIXES
     base_path = Path(directory)
-    
-    video_files = []
-    for ext in video_extensions:
-        video_files.extend(base_path.rglob(f"*{ext}"))
+
+    # Gather files once and filter by lower-cased suffix, then deduplicate paths
+    video_files = [p for p in base_path.rglob("*") if p.is_file() and p.suffix.lower() in allowed_suffixes]
+    # Ensure no duplicate paths (can happen on case-insensitive filesystems when globbing with mixed-case patterns)
+    seen = set()
+    deduped_files = []
+    for p in video_files:
+        key = str(p.resolve()).lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped_files.append(p)
+    video_files = deduped_files
     
     print(f"📹 Found {len(video_files)} video files")
     
     new_count = 0
-    duplicate_count = 0
+    duplicate_in_run_count = 0
+    already_in_db_count = 0
     error_count = 0
+    seen_hashes = set()
     
     for video_path in video_files:
         try:
             # 計算 hash
             file_hash = calculate_file_hash(str(video_path))
             
-            # 檢查是否已存在
+            # 先檢查是否在本次執行內重複
+            if file_hash in seen_hashes:
+                print(f"⏭️  Skip (duplicate in this run): {video_path.name}")
+                duplicate_in_run_count += 1
+                continue
+
+            # 檢查資料庫是否已有紀錄
             existing = db.query(Video).filter(Video.file_hash == file_hash).first()
             if existing:
-                print(f"⏭️  Skip (duplicate): {video_path.name}")
-                duplicate_count += 1
+                print(f"⏭️  Already indexed (in DB): {video_path.name}")
+                already_in_db_count += 1
                 continue
             
             # 提取影片資訊
@@ -119,6 +140,7 @@ def scan_videos(directory: str = "./Midea"):
             db.add(video)
             db.commit()
             
+            seen_hashes.add(file_hash)
             print(f"✅ Added: {video_path.name}")
             new_count += 1
             
@@ -130,9 +152,10 @@ def scan_videos(directory: str = "./Midea"):
     db.close()
     
     print("\n" + "=" * 50)
-    print(f"📊 Scan Summary:")
+    print("📊 Scan Summary:")
     print(f"   New videos: {new_count}")
-    print(f"   Duplicates: {duplicate_count}")
+    print(f"   Already in DB: {already_in_db_count}")
+    print(f"   Duplicates in this run: {duplicate_in_run_count}")
     print(f"   Errors: {error_count}")
     print(f"   Total processed: {len(video_files)}")
 

@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "BoxTech PostgreSQL",
+      "Group": "Servers",
+      "Host": "boxtech_postgres",
+      "Port": 5432,
+      "MaintenanceDB": "boxtech",
+      "Username": "boxtech",
+      "SSLMode": "prefer",
+      "PassFile": "/tmp/pgpassfile"
+    }
+  }
+}

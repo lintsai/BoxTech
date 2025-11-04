@@ -77,3 +77,49 @@ class Suggestion(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     
     action = relationship("Action", back_populates="suggestion")
+
+class PoseData(Base):
+    __tablename__ = "pose_data"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    video_id = Column(UUID(as_uuid=True), ForeignKey("videos.id", ondelete="CASCADE"))
+    frame_number = Column(Integer, nullable=False)
+    timestamp = Column(Float, nullable=False)
+    landmarks = Column(JSON, nullable=False)  # 33 個 MediaPipe 關鍵點
+    
+    video = relationship("Video")
+
+class TrainingSession(Base):
+    __tablename__ = "training_sessions"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    session_date = Column(DateTime, nullable=False)
+    total_duration_minutes = Column(Integer)
+    total_actions = Column(Integer)
+    action_breakdown = Column(JSON)  # {'jab': 50, 'cross': 30, ...}
+    average_scores = Column(JSON)    # {'power': 85, 'speed': 78, ...}
+    
+    user = relationship("User")
+
+class AbilityAssessment(Base):
+    __tablename__ = "ability_assessments"
+    
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
+    assessment_date = Column(DateTime, nullable=False)
+    period = Column(String(20))  # 'day', 'week', 'month'
+    
+    # 六角圖各維度分數
+    power_score = Column(Float)
+    speed_score = Column(Float)
+    technique_score = Column(Float)
+    defense_score = Column(Float)
+    stamina_score = Column(Float)
+    footwork_score = Column(Float)
+    
+    overall_score = Column(Float)
+    level = Column(Integer)
+    level_name = Column(String(50))
+    
+    user = relationship("User")
