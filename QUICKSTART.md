@@ -102,7 +102,10 @@ docker-compose ps
 ### 2. 初始化資料庫
 
 ```powershell
-python scripts\init_database.py
+# 若腳本已移至專案根目錄
+python .\init_database.py
+# 若仍在 scripts/ 目錄
+python .\scripts\init_database.py
 ```
 
 看到 "✅ Database tables created" 表示成功。
@@ -114,7 +117,10 @@ python scripts\init_database.py
 ### 1. 掃描現有影片
 
 ```powershell
-python scripts\scan_videos.py
+# 若腳本已移至專案根目錄
+python .\scan_videos.py
+# 若仍在 scripts/ 目錄
+python .\scripts\scan_videos.py
 ```
 
 這會掃描 `Midea` 資料夾中的所有影片並記錄到資料庫。
@@ -137,7 +143,10 @@ python scripts\scan_videos.py
 選擇一支影片測試姿態估計:
 
 ```powershell
-python scripts\test_pose_estimation.py "Midea\拳擊基地\20250323-體驗課01.mp4"
+# 若腳本已移至專案根目錄
+python .\test_pose_estimation.py "Midea\拳擊基地\20250323-體驗課01.mp4"
+# 若仍在 scripts/ 目錄
+python .\scripts\test_pose_estimation.py "Midea\拳擊基地\20250323-體驗課01.mp4"
 ```
 
 預期輸出:

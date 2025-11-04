@@ -203,18 +203,21 @@ cp .env.example .env
 # 啟動 PostgreSQL 和 Redis
 docker-compose up -d postgres redis
 
-# 初始化資料庫
-python scripts/init_database.py
+# 初始化資料庫 (若腳本在根目錄)
+python init_database.py
+# 若仍在 scripts/ 目錄,請改用: python scripts/init_database.py
 ```
 
 ### 5. 執行第一個測試
 
 ```bash
-# 掃描現有影片
-python scripts/scan_videos.py
+# 掃描現有影片 (若腳本在根目錄)
+python scan_videos.py
+# 若仍在 scripts/ 目錄,請改用: python scripts/scan_videos.py
 
-# 處理一支測試影片
-python scripts/test_pose_estimation.py Midea/拳擊基地/20250323-體驗課01.mp4
+# 處理一支測試影片 (若腳本在根目錄)
+python test_pose_estimation.py Midea/拳擊基地/20250323-體驗課01.mp4
+# 若仍在 scripts/ 目錄,請改用: python scripts/test_pose_estimation.py Midea/拳擊基地/20250323-體驗課01.mp4
 ```
 
 ### 6. 啟動開發伺服器
@@ -287,25 +290,26 @@ npm run dev
 
 ## 📈 當前優先級
 
-### Day 1 完成 (2025-11-03) ✅
+### Day 2 完成 (2025-11-04) ✅
 
-1. ✅ 環境確認 (Python 3.10+, Docker Desktop, Git)
-2. ✅ 專案初始化 (setup_project.py)
-3. ✅ Docker 容器啟動 (PostgreSQL, Redis, PGAdmin)
-4. ✅ Python 依賴安裝
+1. ✅ 初始化資料庫結構 (含新增表格與索引)
+2. ✅ 測試 MediaPipe 姿態估計與視覺化
+3. ✅ 掃描現有 40+ 支影片並修正去重邏輯
+4. ✅ 啟動 FastAPI 後端與基礎端點
 
-### Day 2 計劃 (2025-11-04)
+### Day 3 計劃 (2025-11-05)
 
-1. ⭐ 初始化資料庫結構
-2. ⭐ 測試 MediaPipe 姿態估計
-3. ⭐ 掃描現有 40+ 支影片
-4. ⭐ 啟動 FastAPI 後端服務
+1. ⭐ 資料庫遷移與模型同步 (補齊欄位/索引)
+2. ⭐ 完善掃描器 metadata parser 與去重報告
+3. ⭐ 擴充 API: 列表/詳情/掃描參數化 + 分頁
+4. ⭐ 撰寫基本單元測試 (掃描與 API)
+5. ⭐ 標準化處理 10 支影片 (建立驗收標準)
 
 ### 本週目標 (Week 1)
 
 1. ✅ 完成開發環境設置
-2. ⏳ 建立專案基礎結構
-3. ⏳ 測試核心技術棧
+2. ✅ 建立專案基礎結構 (初版)
+3. ⏳ 測試核心技術棧 → 進一步完善
 4. ⏳ 處理 10 支測試影片
 
 ---
@@ -377,6 +381,24 @@ git commit -m "fix: correct coordinate transformation"
 
 **投入時間**: 1.5 小時
 **下一步**: Day 2 初始化資料庫和測試 MediaPipe
+
+### 2025-11-04 (Day 2)
+
+**資料庫 + 視覺化 + 掃描完成** ✅
+
+- ✅ 資料庫初始化 (新增/更新資料表、索引與約束)
+- ✅ MediaPipe 測試 (33 關鍵點提取、視覺化輸出)
+- ✅ 影片掃描 40+ 支並修正去重邏輯
+- ✅ FastAPI 後端啟動與端點補齊 (`/`, `/health`, `/api/v1/health`, `/api/v1/videos`, `/api/v1/videos/{id}`, `/api/v1/videos/scan`)
+- 🐛 問題排除:
+  - 資料表缺失 → 新增 `pose_data`, `training_sessions`, `ability_assessments`
+  - pgAdmin 不顯示 → 調整 compose 並手動新增伺服器
+  - 腳本層級錯誤 → `init_database.py`, `scan_videos.py`, `test_pose_estimation.py` 上移至根目錄
+  - `check_scan_results.py` 缺失 → 已新增
+- 📋 更新文檔: DOCS_INDEX.md, PRODUCT_ROADMAP.md, EXECUTION_PLAN.md, PROJECT_SUMMARY.md, QUICKSTART.md, DAILY_REPORTS.md
+
+**投入時間**: 3.5 小時  
+**下一步**: Day 3 完善遷移、API 與測試
 
 ---
 

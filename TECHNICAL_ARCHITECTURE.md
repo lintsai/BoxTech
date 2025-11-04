@@ -1065,3 +1065,26 @@ logger.info("Video processed", extra={
    - 存入資料庫
 
 準備好開始了嗎?我可以幫您建立初始專案結構和第一個腳本!
+
+---
+
+## Day 2 更新 (2025-11-04)
+
+### 新增/調整內容
+
+- 資料庫新增/補充資料表:
+  - `pose_data`
+  - `training_sessions`
+  - `ability_assessments`
+- API 啟動並補齊端點:
+  - `GET /`、`GET /health`、`GET /api/v1/health`
+  - `GET /api/v1/videos`、`GET /api/v1/videos/{id}`、`POST /api/v1/videos/scan`
+- 腳本位置調整:
+  - `init_database.py`、`scan_videos.py`、`test_pose_estimation.py` 移至專案根目錄
+  - 新增輔助腳本: `pose_extract_and_visualize.py`、`check_scan_results.py`
+
+### 後續建議 (Day 3)
+
+1. 強化資料庫遷移策略 (版本化 Migration、索引調優)
+2. 完善掃描去重與 Metadata Parser, 產出重複報告
+3. 擴充 API 參數與分頁, 補齊單元測試
