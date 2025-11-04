@@ -420,10 +420,10 @@ python main.py
 - [X] 環境設置完成 (Day 1)
 - [X] Docker 容器啟動 (Day 1)
 - [X] Python 依賴安裝 (Day 1)
-- [ ] 資料庫初始化 (Day 2)
-- [ ] MediaPipe 測試通過 (Day 2)
-- [ ] 影片掃描成功 (Day 2)
-- [ ] API 後端運行 (Day 2)
+- [X] 資料庫初始化 (Day 2)
+- [X] MediaPipe 測試通過 (Day 2)
+- [X] 影片掃描成功 (Day 2)
+- [X] API 後端運行 (Day 2)
 
 ### 下一步 (Week 2)
 

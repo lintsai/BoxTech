@@ -167,23 +167,23 @@ python scripts\test_pose_estimation.py "Midea\拳擊基地\20250323-體驗課01.
 ### 1. 運行 FastAPI 伺服器
 
 ```powershell
+# 從專案根目錄啟動（建議）
+uvicorn backend.main:app --reload --port 8000
+
+# 或傳統做法（進入 backend 再啟動）
 cd backend
 python main.py
-```
-
-或使用 uvicorn:
-
-```powershell
-uvicorn main:app --reload --port 8000
 ```
 
 ### 2. 測試 API
 
 打開瀏覽器訪問:
 
-- API 首頁: http://localhost:8000
-- API 文檔: http://localhost:8000/docs
-- 健康檢查: http://localhost:8000/health
+- API 首頁: [http://localhost:8000](http://localhost:8000)
+- API 文檔: [http://localhost:8000/docs](http://localhost:8000/docs)
+- 健康檢查: [http://localhost:8000/health](http://localhost:8000/health)
+- v1 健康檢查: [http://localhost:8000/api/v1/health](http://localhost:8000/api/v1/health)
+- 列出影片: [http://localhost:8000/api/v1/videos](http://localhost:8000/api/v1/videos)
 
 應該看到 Swagger UI 文檔介面。
 
@@ -196,11 +196,11 @@ uvicorn main:app --reload --port 8000
 - [X] 虛擬環境已建立並啟動
 - [X] 所有 Python 套件已安裝
 - [X] PostgreSQL 和 Redis 容器運行中
-- [ ] 資料庫表格已建立
-- [ ] 掃描到 40+ 支影片
-- [ ] MediaPipe 測試成功 (偵測率 > 80%)
-- [ ] FastAPI 後端運行中
-- [ ] 可以訪問 API 文檔
+- [X] 資料庫表格已建立
+- [X] 掃描到 40+ 支影片
+- [X] MediaPipe 測試成功 (偵測率 > 80%)
+- [X] FastAPI 後端運行中
+- [X] 可以訪問 API 文檔
 
 ---
 

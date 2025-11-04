@@ -25,10 +25,10 @@
   - [X] 啟動 Redis 容器
   - [X] 啟動 PGAdmin 管理工具
   - [X] 解決 PGAdmin email 配置問題
-- [ ] 測試環境
+- [X] 測試環境
   - [X] 測試 MediaPipe 安裝
   - [X] 測試 OpenCV 讀取影片
-  - [ ] 測試資料庫連線
+  - [X] 測試資料庫連線
 
 **產出**: 可運作的開發環境 ✅ (Day 1 完成)
 
@@ -826,14 +826,14 @@
 1. **資料庫設置**:
 
    - [X] 啟動 Docker 容器 `docker-compose up -d`
-   - [ ] 初始化資料庫 `python scripts/init_database.py`
-   - [ ] 測試資料庫連線
+   - [X] 初始化資料庫 `python scripts/init_database.py`
+   - [X] 測試資料庫連線
 2. **功能測試**:
 
-   - [ ] 測試 MediaPipe 處理一支影片
-   - [ ] 掃描現有影片 `python scripts/scan_videos.py`
-   - [ ] 啟動 FastAPI 後端測試
-   - [ ] 撰寫第一個 commit
+   - [X] 測試 MediaPipe 處理一支影片
+   - [X] 掃描現有影片 `python scripts/scan_videos.py`
+   - [X] 啟動 FastAPI 後端測試
+   - [X] 撰寫第一個 commit
 
 ### Day 3-7 行動項 (本週其餘時間)
 
