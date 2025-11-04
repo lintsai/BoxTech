@@ -5,6 +5,7 @@ Test MediaPipe Pose Estimation
 import cv2
 import mediapipe as mp
 import sys
+from pathlib import Path
 
 def test_mediapipe(video_path: str):
     """測試 MediaPipe 姿態估計"""
@@ -12,7 +13,6 @@ def test_mediapipe(video_path: str):
     print(f"📹 Processing: {video_path}")
     
     mp_pose = mp.solutions.pose
-    mp_drawing = mp.solutions.drawing_utils
     
     pose = mp_pose.Pose(
         static_image_mode=False,
@@ -65,7 +65,7 @@ def test_mediapipe(video_path: str):
     detection_rate = (detected_count / frame_count) * 100
     
     print("\n" + "=" * 50)
-    print(f"✅ Processing completed!")
+    print("✅ Processing completed!")
     print(f"   Total frames: {frame_count}")
     print(f"   Detected frames: {detected_count}")
     print(f"   Detection rate: {detection_rate:.1f}%")
@@ -76,8 +76,31 @@ def test_mediapipe(video_path: str):
         print("   ⚠️  Detection rate is low. Check video quality.")
 
 if __name__ == "__main__":
+    def _find_default_video() -> str | None:
+        base = Path("Midea")
+        if not base.exists():
+            return None
+        video_exts = [".mp4", ".mov", ".MOV", ".avi"]
+        candidates = []
+        for ext in video_exts:
+            candidates.extend(base.rglob(f"*{ext}"))
+        if not candidates:
+            return None
+        # pick the most recently modified file
+        try:
+            newest = max(candidates, key=lambda p: p.stat().st_mtime)
+            return str(newest)
+        except Exception:
+            return str(candidates[0])
+
     if len(sys.argv) < 2:
-        print("Usage: python test_pose_estimation.py <video_path>")
-        sys.exit(1)
-    
-    test_mediapipe(sys.argv[1])
+        auto = _find_default_video()
+        if auto:
+            print(f"ℹ️  No video_path provided. Using latest found video: {auto}")
+            test_mediapipe(auto)
+        else:
+            print("Usage: python test_pose_estimation.py <video_path>")
+            print("No video found under ./Midea. Please provide a path to a video file.")
+            sys.exit(1)
+    else:
+        test_mediapipe(sys.argv[1])
