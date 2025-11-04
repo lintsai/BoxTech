@@ -24,6 +24,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Routers
+from backend.api.health import router as health_router  # noqa: E402
+from backend.api.videos import router as videos_router  # noqa: E402
+
+app.include_router(health_router)
+app.include_router(videos_router)
+
 @app.get("/")
 async def root():
     return {
