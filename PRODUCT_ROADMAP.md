@@ -582,7 +582,7 @@
 3. [X] 設置開發環境 (Day 1)
 4. [X] 安裝必要套件 (Day 1)
 5. [X] 建立 Git Repository (Day 1)
-6. [ ] 測試 MediaPipe 在一支影片上 (Day 2)
+6. [X] 測試 MediaPipe 在一支影片上 (Day 2)
 
 ### 下週行動項 (Week 2)
 
