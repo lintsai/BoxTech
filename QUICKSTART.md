@@ -167,23 +167,23 @@ python scripts\test_pose_estimation.py "Midea\拳擊基地\20250323-體驗課01.
 ### 1. 運行 FastAPI 伺服器
 
 ```powershell
+# 從專案根目錄啟動（建議）
+uvicorn backend.main:app --reload --port 8000
+
+# 或傳統做法（進入 backend 再啟動）
 cd backend
 python main.py
-```
-
-或使用 uvicorn:
-
-```powershell
-uvicorn main:app --reload --port 8000
 ```
 
 ### 2. 測試 API
 
 打開瀏覽器訪問:
 
-- API 首頁: http://localhost:8000
-- API 文檔: http://localhost:8000/docs
-- 健康檢查: http://localhost:8000/health
+- API 首頁: <http://localhost:8000>
+- API 文檔: <http://localhost:8000/docs>
+- 健康檢查: <http://localhost:8000/health>
+- v1 健康檢查: <http://localhost:8000/api/v1/health>
+- 列出影片: <http://localhost:8000/api/v1/videos>
 
 應該看到 Swagger UI 文檔介面。
 
