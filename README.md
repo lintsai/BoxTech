@@ -220,9 +220,8 @@ python scripts/test_pose_estimation.py Midea/拳擊基地/20250323-體驗課01.m
 ### 6. 啟動開發伺服器
 
 ```bash
-# 啟動 FastAPI 後端
-cd backend
-uvicorn main:app --reload --port 8000
+# 啟動 FastAPI 後端（建議做法，從專案根目錄）
+uvicorn backend.main:app --reload --port 8000
 
 # 啟動 Celery Worker (另一個終端)
 celery -A tasks worker --loglevel=info
@@ -235,9 +234,16 @@ npm run dev
 
 ### 7. 訪問應用
 
-- **後端 API**: http://localhost:8000
-- **API 文檔**: http://localhost:8000/docs
-- **前端**: http://localhost:3000
+- 後端 API: http://localhost:8000
+- API 文檔: http://localhost:8000/docs
+- 前端: http://localhost:3000
+
+常用端點（v1）:
+
+- GET /api/v1/health — 健康檢查
+- GET /api/v1/videos — 列出影片（支援 limit, offset）
+- GET /api/v1/videos/{id} — 影片詳情
+- POST /api/v1/videos/scan — 觸發後台掃描（body: {"directory":"Midea"}）
 
 ---
 
