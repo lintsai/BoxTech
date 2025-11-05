@@ -45,4 +45,5 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    # Run using the fully-qualified module path so it works from the repo root
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)

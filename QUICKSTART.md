@@ -179,6 +179,9 @@ python .\scripts\test_pose_estimation.py "Midea\拳擊基地\20250323-體驗課0
 # 從專案根目錄啟動（建議）
 uvicorn backend.main:app --reload --port 8000
 
+# 若你偏好使用 `main:app`（我們已提供同名入口檔）
+uvicorn main:app --reload --port 8000
+
 # 或傳統做法（進入 backend 再啟動）
 cd backend
 python main.py
