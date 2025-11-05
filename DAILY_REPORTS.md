@@ -625,7 +625,75 @@
 ```
 
 ---
+ 
+## Day 3 報告 (2025-11-05)
+
+### 📋 執行摘要
+
+**階段**: API功能及基礎設施開發中
+**狀態**: 完成
+**投入時間**: 2.5 Hour
+
+### ✅ 已完成項目
+
+1. 完成 資料庫：遷移與索引，使用 Alembic 初始化
+2. 新增掃描報告腳本，generate_scan_report.py
+3. scan_videos.py 移除 “.heic”，避免把圖片當影片索引（改為允許 .mp4/.mov/.avi 並以副檔名小寫判斷）
+4. API 擴充：篩選、排序、分頁，在 GET /api/v1/videos 加入篩選與排序；POST /api/v1/videos/scan 支援 mode（incremental/full）
+5. 完成最小測試（API + utils）: tests/test_api_videos.py & tests/test_utils_parse_filename.py
+6. 新增 verify_day3_api.py 驗證腳本，並驗證以下四項皆通過：
+   - ✅ 資料庫遷移可反覆執行（head ↔ downgrade）
+   - ✅ 影片掃描有重複/異常報告（可追蹤原因）
+   - ✅ API videos 列表可分頁、詳情正確呈現 metadata
+   - ✅ 10 支影片全流程通過（掃描 → 寫庫 → API 查）
+
+### 🚧 進行中項目
+
+1. 無, 依照計劃
+
+### ❌ 遇到的問題
+
+1. 問題: 修正服務啟動錯誤
+   (venv) PS C:\Users\user\source\BoxTech> uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   INFO:     Will watch for changes in these directories: ['C:\\Users\\user\\source\\BoxTech']
+   INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+   INFO:     Started reloader process [61836] using WatchFiles
+   ERROR:    Error loading ASGI app. Could not import module "main".
+   解決方案: 透過 AI 進行程式碼修正（改用 backend.main:app 啟動）
+   狀態: 已解決
+
+### 💡 學習與洞察
+
+1. 學習 Alembic 的使用方式（初始化、產生版本、升降級流程）
+
+### 📝 決策記錄
+
+1. 無
+
+### 🎯 下一步行動
+
+1. 依照計劃（下次 Day 4 於 11/11）
+
+### 📊 時間統計
+
+- 開發: 1 小時
+- 測試: 1 小時
+- 文檔: 0.5 小時
+- 總計: 2.5 小時
+
+### ✅ 檢查清單
+
+✅ 資料庫遷移可反覆執行（head ↔ downgrade）
+✅ 影片掃描有重複/異常報告（可追蹤原因）
+✅ API videos 列表可分頁、詳情正確呈現 metadata
+✅ 10 支影片全流程通過（掃描 → 寫庫 → API 查）
+
+**報告人**: Lin Tsai
+**日期**: 2025-11-05
+**下次報告**: 2025-11-11 (中間時間有事情休息一下，Day 4 會是 11/11)
+
+---
 
 **文檔建立**: 2025-11-02
-**最後更新**: 2025-11-04
-**版本**: 1.2
+**最後更新**: 2025-11-05
+**版本**: 1.3

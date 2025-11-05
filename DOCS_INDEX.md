@@ -52,8 +52,10 @@
 | --------------------------------------------------- | -------------------------- |
 | [scripts/setup_project.py](./scripts/setup_project.py) | 自動建立專案結構和初始代碼 |
 | scripts/init_database.py                            | 初始化資料庫表格           |
-| scripts/scan_videos.py                              | 掃描並記錄影片             |
+| scripts/scan_videos.py                              | 掃描並記錄影片（支援 incremental/full 模式；排除 .heic） |
 | scripts/test_pose_estimation.py                     | 測試 MediaPipe 姿態估計    |
+| scripts/generate_scan_report.py                     | 生成掃描報告（重複/異常/分佈） |
+| scripts/verify_day3_api.py                          | 驗證 API 與掃描流程（Day 3） |
 
 ---
 
@@ -194,6 +196,7 @@
 | 1.1  | 2025-11-02 | Day 0 完成,更新閱讀進度和檢查清單              |
 | 1.2  | 2025-11-03 | Day 1 完成,環境設置與初始化,更新 Week 1 任務   |
 | 1.3  | 2025-11-04 | Day 2 完成,DB/MediaPipe/掃描/API,文檔全面同步 |
+| 1.4  | 2025-11-05 | Day 3 完成,Alembic 遷移+索引,API 篩選/排序/分頁,掃描報告與最小測試 |
 
 ---
 
@@ -309,5 +312,5 @@ python scripts\setup_project.py
 ---
 
 **文檔維護者**: BoxTech Team
-**最後更新**: 2025-11-04
-**版本**: 1.3
+**最後更新**: 2025-11-05
+**版本**: 1.4

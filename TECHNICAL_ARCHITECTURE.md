@@ -1088,3 +1088,30 @@ logger.info("Video processed", extra={
 1. 強化資料庫遷移策略 (版本化 Migration、索引調優)
 2. 完善掃描去重與 Metadata Parser, 產出重複報告
 3. 擴充 API 參數與分頁, 補齊單元測試
+
+---
+
+## Day 3 更新 (2025-11-05)
+
+### 新增/調整內容
+
+- 資料庫遷移與索引：
+  - 初始化 Alembic（`alembic.ini`、`alembic/`）並建立版本檔
+  - 為影片列表常用查詢欄位建立索引（如 upload_date、training_date、processing_status 等）
+- API 擴充：
+  - `GET /api/v1/videos` 支援分頁/篩選/排序
+    - Query：limit、offset、training_type、location、q、date_from/date_to（YYYY-MM-DD）、order_by、order_dir
+  - `POST /api/v1/videos/scan` 支援 `mode`（incremental|full）
+- 掃描與報告：
+  - `scripts/scan_videos.py` 僅允許 .mp4/.mov/.avi，排除 .heic 等圖片副檔名，大小寫安全過濾
+  - `scripts/generate_scan_report.py` 產出重複與異常報告（JSON/CSV）
+- 測試與驗證：
+  - `tests/test_api_videos.py`、`tests/test_utils_parse_filename.py`
+  - `scripts/verify_day3_api.py` 一鍵驗證列表/詳情/掃描
+
+### 後續建議（Day 4 方向）
+
+1. 索引微調與 ORM 欄位再校準（針對最常用的篩選組合）
+2. 報告擴充：加入影片長度分佈、FPS 異常閾值統計
+3. 增補 API 錯誤處理與測試案例（異常參數、空集合回傳格式）
+4. 以 10 支影片執行 E2E 檢核並產出小結

@@ -201,6 +201,38 @@ python main.py
 
 ---
 
+## 第六步: 進行資料庫遷移與報告（Day 3 起）
+
+### 1. Alembic 遷移
+
+```powershell
+# 在專案根目錄執行
+alembic upgrade head
+# 驗證回滾（選用）
+alembic downgrade -1
+# 再升級回最新（選用）
+alembic upgrade head
+```
+
+### 2. 生成掃描報告
+
+```powershell
+# 產生重複/異常/統計報告（輸出到 output/scan_reports/）
+python .\scripts\generate_scan_report.py
+```
+
+### 3. 執行最小測試與驗證
+
+```powershell
+# 執行最小測試（需已啟動後端與資料庫）
+pytest -q
+
+# 一鍵驗證 API 與掃描流程
+python .\scripts\verify_day3_api.py
+```
+
+---
+
 ## 🎯 第一天目標檢查清單
 
 - [X] Python 3.10+ 已安裝
@@ -213,6 +245,9 @@ python main.py
 - [X] MediaPipe 測試成功 (偵測率 > 80%)
 - [X] FastAPI 後端運行中
 - [X] 可以訪問 API 文檔
+- [X] Alembic 遷移可成功升降級（Day 3）
+- [X] 生成掃描報告（Day 3）
+- [X] 最小測試與驗證通過（Day 3）
 
 ---
 
