@@ -4,6 +4,7 @@ Video Scanning Script
 """
 
 import sys
+import argparse
 from pathlib import Path
 import hashlib
 import cv2
@@ -54,18 +55,25 @@ def parse_filename(filename: str) -> dict:
         
         try:
             metadata['training_date'] = datetime.strptime(date_str, "%Y%m%d")
-        except:
+        except Exception:
             pass
         
         metadata['training_type'] = type_str
     
     return metadata
 
-ALLOWED_VIDEO_SUFFIXES = {'.mp4', '.mov', '.avi', '.heic'}  # Exclude images like .heic by default
+ALLOWED_VIDEO_SUFFIXES = {'.mp4', '.mov', '.avi'}  # Exclude images like .heic by default
 
 
-def scan_videos(directory: str = "./Midea"):
-    """掃描影片資料夾"""
+def scan_videos(directory: str = "./Midea", mode: str = "incremental"):
+    """掃描影片資料夾
+    mode: 'incremental'（預設）或 'full'。full 會重新處理已存在於 DB 的檔案並更新欄位。
+    """
+    mode = (mode or "incremental").lower()
+    if mode not in {"incremental", "full"}:
+        print(f"⚠️  Unknown mode '{mode}', fallback to 'incremental'")
+        mode = "incremental"
+
     db = SessionLocal()
     
     # Use case-insensitive suffix filtering to avoid duplicates on Windows
@@ -88,6 +96,7 @@ def scan_videos(directory: str = "./Midea"):
     print(f"📹 Found {len(video_files)} video files")
     
     new_count = 0
+    updated_count = 0
     duplicate_in_run_count = 0
     already_in_db_count = 0
     error_count = 0
@@ -107,9 +116,41 @@ def scan_videos(directory: str = "./Midea"):
             # 檢查資料庫是否已有紀錄
             existing = db.query(Video).filter(Video.file_hash == file_hash).first()
             if existing:
-                print(f"⏭️  Already indexed (in DB): {video_path.name}")
-                already_in_db_count += 1
-                continue
+                if mode == "incremental":
+                    print(f"⏭️  Already indexed (in DB): {video_path.name}")
+                    already_in_db_count += 1
+                    continue
+                else:
+                    # full 模式：重新擷取資訊並更新現有紀錄
+                    print(f"🔁 Reprocessing (full mode): {video_path.name}")
+                    video_info = extract_video_info(str(video_path))
+                    file_metadata = parse_filename(video_path.name)
+
+                    # 判斷位置
+                    location = "未知"
+                    if "LeYuan" in str(video_path) or "樂嫄" in str(video_path):
+                        location = "樂嫄運動空間"
+                    elif "拳擊基地" in str(video_path):
+                        location = "拳擊基地"
+
+                    # 更新欄位（保留原有 id / upload_date）
+                    existing.file_path = str(video_path)
+                    existing.duration_seconds = video_info['duration_seconds']
+                    existing.fps = video_info['fps']
+                    existing.resolution = video_info['resolution']
+                    existing.file_size_bytes = video_path.stat().st_size
+                    existing.processing_status = "pending"
+                    existing.training_date = file_metadata.get('training_date')
+                    existing.training_type = file_metadata.get('training_type')
+                    existing.location = location
+
+                    db.add(existing)
+                    db.commit()
+
+                    seen_hashes.add(file_hash)
+                    print(f"✅ Updated: {video_path.name}")
+                    updated_count += 1
+                    continue
             
             # 提取影片資訊
             print(f"📊 Processing: {video_path.name}")
@@ -154,12 +195,20 @@ def scan_videos(directory: str = "./Midea"):
     print("\n" + "=" * 50)
     print("📊 Scan Summary:")
     print(f"   New videos: {new_count}")
+    print(f"   Updated (full mode): {updated_count}")
     print(f"   Already in DB: {already_in_db_count}")
     print(f"   Duplicates in this run: {duplicate_in_run_count}")
     print(f"   Errors: {error_count}")
     print(f"   Total processed: {len(video_files)}")
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="BoxTech Video Scanner")
+    parser.add_argument("--directory", "-d", type=str, default="./Midea", help="Root directory to scan")
+    parser.add_argument("--mode", "-m", type=str, default="incremental", choices=["incremental", "full"], help="Scan mode")
+    args = parser.parse_args()
+
     print("🔍 BoxTech Video Scanner")
     print("=" * 50)
-    scan_videos()
+    print(f"Directory: {args.directory}")
+    print(f"Mode: {args.mode}")
+    scan_videos(directory=args.directory, mode=args.mode)

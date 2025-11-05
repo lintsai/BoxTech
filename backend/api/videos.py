@@ -5,9 +5,10 @@ Video-related API routes under /api/v1/videos
 from typing import List, Optional
 from uuid import UUID
 import threading
-
-from fastapi import APIRouter, Depends, HTTPException, Body
+from datetime import datetime
+from fastapi import APIRouter, Depends, HTTPException, Body, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import and_, or_, desc, asc
 
 from backend.database.connection import get_db
 from backend.models.schemas import Video
@@ -34,10 +35,47 @@ def _video_to_dict(v: Video) -> dict:
 
 
 @router.get("")
-def list_videos(db: Session = Depends(get_db), limit: int = 100, offset: int = 0):
-    q = db.query(Video).order_by(Video.upload_date.desc()).offset(offset).limit(limit)
-    items = [_video_to_dict(v) for v in q.all()]
-    total = db.query(Video).count()
+def list_videos(
+    db: Session = Depends(get_db),
+    limit: int = Query(50, ge=1, le=200),
+    offset: int = Query(0, ge=0),
+    training_type: Optional[str] = None,
+    location: Optional[str] = None,
+    date_from: Optional[str] = Query(None, description="YYYY-MM-DD"),
+    date_to: Optional[str] = Query(None, description="YYYY-MM-DD"),
+    q: Optional[str] = Query(None, description="filename substring"),
+    order_by: str = Query("upload_date", pattern="^(upload_date|training_date|file_size_bytes|fps)$"),
+    order_dir: str = Query("desc", pattern="^(asc|desc)$"),
+):
+    qset = db.query(Video)
+
+    if training_type:
+        qset = qset.filter(Video.training_type == training_type)
+    if location:
+        qset = qset.filter(Video.location == location)
+    if date_from:
+        try:
+            dt = datetime.strptime(date_from, "%Y-%m-%d")
+            qset = qset.filter(Video.upload_date >= dt)
+        except ValueError:
+            raise HTTPException(400, detail="Invalid date_from")
+    if date_to:
+        try:
+            dt = datetime.strptime(date_to, "%Y-%m-%d")
+            qset = qset.filter(Video.upload_date <= dt)
+        except ValueError:
+            raise HTTPException(400, detail="Invalid date_to")
+    if q:
+        # 檔名片段搜尋
+        like = f"%{q}%"
+        qset = qset.filter(Video.file_path.ilike(like))
+
+    # 排序
+    col = getattr(Video, order_by)
+    qset = qset.order_by(desc(col) if order_dir == "desc" else asc(col))
+
+    total = qset.count()
+    items = [_video_to_dict(v) for v in qset.offset(offset).limit(limit).all()]
     return {"total": total, "count": len(items), "items": items}
 
 
@@ -50,18 +88,22 @@ def get_video(video_id: UUID, db: Session = Depends(get_db)):
 
 
 @router.post("/scan", status_code=202)
-def trigger_scan(directory: str = Body(default="Midea", embed=True)):
-    """Trigger a background scan of the media directory.
-
-    Note: This launches the existing scripts.scan_videos.scan_videos function in a
-    background thread to avoid blocking the API. Logs will appear in server output.
+def trigger_scan(
+    directory: str = Body(default="Midea", embed=True),
+    mode: str = Body(default="incremental", embed=True)  # 'incremental' or 'full'
+):
+    """
+    觸發背景掃描。
+    mode:
+      - incremental: 跳過 DB 已存在的檔案（現行行為）
+      - full: 重新處理（傳遞旗標給掃描器）
     """
     try:
-        # Ensure scripts is importable and call its scan function in background
         import scripts.scan_videos as sv  # type: ignore
-
-        t = threading.Thread(target=sv.scan_videos, kwargs={"directory": directory}, daemon=True)
+        kwargs = {"directory": directory, "mode": mode}
+        t = threading.Thread(target=sv.scan_videos, kwargs=kwargs, daemon=True)
         t.start()
-        return {"status": "started", "directory": directory}
+        return {"status": "started", "directory": directory, "mode": mode}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to start scan: {e}")
+    
